@@ -50,3 +50,6 @@ graph TB
     S --> PCENTER
     S --> TASK
     S --> DATAAPI
+
+## 接口修改范围影响规范
+当你修改module-common、module-service、module-api中的接口时，一定要查看项目的依赖，判断被修改的接口是否也在其他模块中使用，并告知哪个模块那个页面中使用了，告知我我同意后才能修改
