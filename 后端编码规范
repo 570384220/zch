@@ -17,3 +17,36 @@
 
 ## for循坏内逻辑处理规范
 当你生成了针对for循环里面的查询、更新或者操作，要考虑能进行先for批量查询，将结果转换成Map后获取处理；对应更新也是如此要将所有结果处理成一个待更新的集合，最后统一批量更新；删除也是最后统一批量删除
+
+## 后端项目模块依赖
+graph TB
+    subgraph 基础层
+        R[module-repository<br/>数据访问层]
+        C[module-common<br/>公共组件]
+        S[module-service<br/>业务服务层]
+        A[module-api<br/>共享 API/Controller]
+    end
+
+    subgraph Web 应用层 - 依赖 module-api
+        MNG[module-mng<br/>金融中心端]
+        CNT[module-cnt<br/>借款人客户端]
+        HXCNT[module-hxcnt<br/>核心企业端]
+        APPSERV[module-appserv<br/>App 服务]
+    end
+
+    subgraph Web 应用层 - 直接依赖 module-service
+        PCENTER[module-pcenter<br/>个人中心]
+        TASK[module-task<br/>定时任务]
+        DATAAPI[module-dataapi<br/>内部数据接口]
+    end
+
+    TEMPLATE[module-template<br/>模板转换<br/>独立模块]
+
+    R --> C --> S --> A
+    A --> MNG
+    A --> CNT
+    A --> HXCNT
+    A --> APPSERV
+    S --> PCENTER
+    S --> TASK
+    S --> DATAAPI
